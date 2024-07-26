@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "drf-site"
+version = "0.1.0"
+description = "Project using DRF, postgres, mongo ..."
+authors = ["dmitriy"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+django = "^5.0.7"
+psycopg2 = "^2.9.9"
+pyyaml = "^6.0.1"
+pydantic-settings = "^2.3.4"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
