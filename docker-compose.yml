@@ -1,0 +1,46 @@
+services:
+
+  postgres-db:
+    image: postgres:16.1
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - "${POSTGRES_PORT}:${POSTGRES_PORT}"
+    volumes:
+      - postgres_db:${PGDATA}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    restart: unless-stopped
+
+  django-server:
+    build: ./django_site
+    restart: always
+    depends_on:
+      postgres-db:
+        condition: service_healthy
+    env_file:
+      - .env
+    environment:
+      DJANGO_ROOT: ${DJANGO_ROOT}
+      DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY}
+      DJANGO_SUPERUSER_USERNAME: ${DJANGO_SUPERUSER_USERNAME}
+      DJANGO_SUPERUSER_PASSWORD: ${DJANGO_SUPERUSER_PASSWORD}
+      DJANGO_SUPERUSER_EMAIL: ${DJANGO_SUPERUSER_EMAIL}
+      DJANGO_PORT: ${DJANGO_PORT}
+    ports:
+      - "${DJANGO_PORT}:${DJANGO_PORT}"
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://${DJANGO_HOST}:${DJANGO_PORT}" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+
+volumes:
+  postgres_db:
