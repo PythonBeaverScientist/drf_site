@@ -17,6 +17,10 @@ jobs:
           cd django_site
           python -m poetry install
       - name: run flake8
-        run: python -m poetry run flake8
+        run: | 
+          cd django_site
+          python -m poetry run flake8
       - name: run mypy
-        run: python -m poetry run mypy
+        run: | 
+          cd django_site
+          python -m poetry run mypy
