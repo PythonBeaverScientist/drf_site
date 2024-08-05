@@ -23,4 +23,4 @@ jobs:
       - name: run mypy
         run: | 
           cd django_site
-          python -m poetry run mypy
+          python -m poetry run mypy .
