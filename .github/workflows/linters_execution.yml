@@ -1,7 +1,6 @@
 name: LintersExecution
 on:
-  - push
-  - pull_request
+  pull_request
 jobs:
   run_linters:
     runs-on: ubuntu-latest
